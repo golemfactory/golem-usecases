@@ -3,7 +3,7 @@ from golem.docker.environment import DockerEnvironment
 
 
 class IndigoRendererEnvironment(DockerEnvironment):
-    INDIGO_RENDERER_DOCKER_IMAGE = "golemfactory/indigorenderer"
+    INDIGO_RENDERER_DOCKER_IMAGE = "golemfactory/indigo"
 
     @classmethod
     def get_id(cls):

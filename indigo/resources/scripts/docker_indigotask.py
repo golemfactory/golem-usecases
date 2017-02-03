@@ -42,8 +42,11 @@ def find_igi(directory):
         return None
 
 
-def format_indigo_renderer_cmd(start_task, output_basename, output_format, scene_file, num_cores):
+def format_indigo_renderer_cmd(start_task, output_basename, output_format, scene_file, num_cores,
+                               halttime, haltspp):
     igi_file = find_igi(WORK_DIR)
+
+    scene_file = "/opt/indigo/testscenes/Caterpillar - Paha Shabanov/caterpillar_5.igs"
     if igi_file is not None:
         cmd = [
             "{}".format(INDIGO_COMMAND),
@@ -58,6 +61,13 @@ def format_indigo_renderer_cmd(start_task, output_basename, output_format, scene
             "-o", "{}/{}{}.{}".format(OUTPUT_DIR, output_basename, start_task, output_format),
             "-t", "{}".format(num_cores)
         ]
+    if haltspp == 0:
+        cmd.append("-halt")
+        cmd.append(str(halttime))
+    else:
+        cmd.append("-haltspp")
+        cmd.append(str(haltspp))
+
     print(cmd, file=sys.stderr)
     return cmd
 
@@ -68,7 +78,9 @@ def exec_cmd(cmd):
 
 
 def run_indigo_renderer_task(start_task, outfilebasename, output_format, scene_file_src,
-                          scene_dir, num_cores):
+                          scene_dir, num_cores, halttime, haltspp):
+
+    print(scene_file_src, file=sys.stderr)
 
     with tempfile.NamedTemporaryFile(mode="w", suffix=".igs", dir=WORK_DIR,
                                      delete=False) as tmp_scene_file:
@@ -86,7 +98,7 @@ def run_indigo_renderer_task(start_task, outfilebasename, output_format, scene_f
         symlink_or_copy(igi_file, os.path.join(WORK_DIR, os.path.basename(igi_file)))
 
     cmd = format_indigo_renderer_cmd(start_task, outfilebasename, output_format,
-                                  tmp_scene_file.name, num_cores)
+                                     tmp_scene_file.name, num_cores, halttime, haltspp)
 
     exit_code = exec_cmd(cmd)
     if exit_code is not 0:
@@ -105,6 +117,7 @@ def run_indigo_renderer_task(start_task, outfilebasename, output_format, scene_f
 
 
 run_indigo_renderer_task(params.start_task, params.outfilebasename, params.output_format,
-                         params.scene_file_src, params.scene_dir, params.num_threads)
+                         params.scene_file_src, params.scene_dir, params.num_threads,
+                         params.halttime, params.haltspp)
 
 

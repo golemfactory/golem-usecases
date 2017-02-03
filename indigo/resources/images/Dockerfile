@@ -1,13 +1,14 @@
 # Dockerfile for tasks requiring IndigoRenderer
 
-FROM golemfactory/base:1.2
+FROM golemfactory/indigo:0.1
 
 RUN apt-get update && \
 	apt-get install -y \
 		curl \
 		bzip2 \
 		libglu1-mesa \
-		libgomp1 && \
+		libgomp1 \
+		libpng12-0 && \
 	apt-get -y autoremove && \
 	rm -rf /var/lib/apt/lists/*
 

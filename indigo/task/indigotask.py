@@ -16,6 +16,7 @@ from golem.task.taskstate import SubtaskStatus
 from apps.core.task.coretask import TaskTypeInfo
 from apps.core.task.coretaskstate import Options
 from apps.indigo.indigoenvironment import IndigoRendererEnvironment
+from apps.indigo.resources.scenefileeditor import regenerate_indigo_file
 from apps.rendering.resources.imgrepr import load_img, blend
 from apps.rendering.task.renderingtask import RenderingTask, RenderingTaskBuilder, \
     AcceptClientVerdict
@@ -219,9 +220,7 @@ class IndigoTask(RenderingTask):
             write_interval = int(self.halttime / 2)
         else:
             write_interval = 60
-        scene_src = regenerate_indigo_file(self.scene_file_src, self.res_x, self.res_y, self.halttime,
-                                        self.haltspp,
-                                        write_interval, [0, 1, 0, 1], self.output_format)
+        scene_src = regenerate_indigo_file(self.scene_file_src, self.res_x, self.res_y)
         scene_dir = os.path.dirname(self._get_scene_file_rel_path())
 
         num_threads = max(num_cores, 1)
@@ -234,7 +233,9 @@ class IndigoTask(RenderingTask):
                       "output_format": self.output_format,
                       "scene_file_src": scene_src,
                       "scene_dir": scene_dir,
-                      "num_threads": num_threads
+                      "num_threads": num_threads,
+                      "halttime": self.halttime,
+                      "haltspp": self.haltspp,
                       }
 
         hash = "{}".format(random.getrandbits(128))
@@ -294,8 +295,7 @@ class IndigoTask(RenderingTask):
         if not os.path.exists(self.test_task_res_path):
             os.makedirs(self.test_task_res_path)
 
-        scene_src = regenerate_indigo_file(self.scene_file_src, self.res_x, self.res_y, 1, 0, 1,
-                                        [0, 1, 0, 1], self.output_format)
+        scene_src = regenerate_indigo_file(self.scene_file_src, self.res_x, self.res_y)
         scene_dir = os.path.dirname(self._get_scene_file_rel_path())
 
         extra_data = {
@@ -307,7 +307,9 @@ class IndigoTask(RenderingTask):
             "output_format": self.output_format,
             "scene_file_src": scene_src,
             "scene_dir": scene_dir,
-            "num_threads": 1
+            "num_threads": 1,
+            "halttime": 10,
+            "haltspp": 0,
         }
 
         hash = "{}".format(random.getrandbits(128))
@@ -329,8 +331,7 @@ class IndigoTask(RenderingTask):
 
     def query_extra_data_for_merge(self):
 
-        scene_src = regenerate_indigo_file(self.scene_file_src, self.res_x, self.res_y, 10, 0,
-                                        5, [0, 1, 0, 1], self.output_format)
+        scene_src = regenerate_indigo_file(self.scene_file_src, self.res_x, self.res_y)
 
         scene_dir = os.path.dirname(self._get_scene_file_rel_path())
         extra_data = {"path_root": self.main_scene_dir,
@@ -341,7 +342,9 @@ class IndigoTask(RenderingTask):
                       "output_format": self.output_format,
                       "scene_file_src": scene_src,
                       "scene_dir": scene_dir,
-                      "num_threads": 4}
+                      "num_threads": 4,
+                      "halttime": 20,
+                      "haltspp": 0}
 
         return self._new_compute_task_def("FINALTASK", extra_data, scene_dir, 0)
 
