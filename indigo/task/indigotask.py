@@ -258,7 +258,7 @@ class IndigoTask(RenderingTask):
             self.subtasks_given[subtask_id]['status'] = SubtaskStatus.finished
             for tr_file in tr_files:
                 tr_file = os.path.normpath(tr_file)
-                if tr_file.upper().endswith('.FLM'):
+                if tr_file.upper().endswith('.IGI'):
                     self.collected_file_names[num_start] = tr_file
                     self.counting_nodes[self.subtasks_given[subtask_id]['node_id']].accept()
                     self.num_tasks_received += 1
@@ -276,6 +276,8 @@ class IndigoTask(RenderingTask):
                                 logger.info(
                                     "Subtask " + str(subtask_id) + " successfully verified.")
                 elif not tr_file.upper().endswith('.LOG'):
+                    print("Preview file {}".format(tr_file))
+                    print("Num start {}".format(num_start))
                     self.subtasks_given[subtask_id]['previewFile'] = tr_file
                     self._update_preview(tr_file, num_start)
         else:
@@ -434,16 +436,22 @@ class IndigoTask(RenderingTask):
             img = self._open_preview()
             img.close()
 
+    def _open_preview(self, mode="RGBA", ext="PNG"):
+        return RenderingTask._open_preview(self, mode, ext)
+
     def __update_preview_from_pil_file(self, new_chunk_file_path):
+        print ("NEW CHUNK FILE PATH {}".format(new_chunk_file_path))
+        print("RES X {} RESY {} SCALEFACTOR {}".format(self.res_x, self.res_y, self.scale_factor))
         img = Image.open(new_chunk_file_path)
         scaled = img.resize((int(round(self.scale_factor * self.res_x)),
                              int(round(self.scale_factor * self.res_y))),
                             resample=Image.BILINEAR)
         img.close()
-
+        print "SCALED SIZE {} {}".format(scaled.size, scaled.mode)
         img_current = self._open_preview()
+        print("IMG CURRENT SIZE {} {}".format(img_current.size, img_current.mode))
         img_current = ImageChops.blend(img_current, scaled, 1.0 / float(self.numAdd))
-        img_current.save(self.preview_file_path, "BMP")
+        img_current.save(self.preview_file_path, "PNG")
         img.close()
         scaled.close()
         img_current.close()
@@ -461,7 +469,7 @@ class IndigoTask(RenderingTask):
                               (int(round(self.scale_factor * self.res_x)),
                                int(round(self.scale_factor * self.res_y))),
                               method=Image.BILINEAR)
-        scaled.save(self.preview_file_path, "BMP")
+        scaled.save(self.preview_file_path, "PNG")
         img.close()
         scaled.close()
         img_current.close()

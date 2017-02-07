@@ -45,8 +45,6 @@ def find_igi(directory):
 def format_indigo_renderer_cmd(start_task, output_basename, output_format, scene_file, num_cores,
                                halttime, haltspp):
     igi_file = find_igi(WORK_DIR)
-
-    scene_file = "/opt/indigo/testscenes/Caterpillar - Paha Shabanov/caterpillar_5.igs"
     if igi_file is not None:
         cmd = [
             "{}".format(INDIGO_COMMAND),
@@ -59,6 +57,7 @@ def format_indigo_renderer_cmd(start_task, output_basename, output_format, scene
             "{}".format(INDIGO_COMMAND),
             "{}".format(scene_file),
             "-o", "{}/{}{}.{}".format(OUTPUT_DIR, output_basename, start_task, output_format),
+            "-igio", "{}/{}{}.igi".format(OUTPUT_DIR, output_basename, start_task),
             "-t", "{}".format(num_cores)
         ]
     if haltspp == 0:
@@ -102,9 +101,11 @@ def run_indigo_renderer_task(start_task, outfilebasename, output_format, scene_f
 
     exit_code = exec_cmd(cmd)
     if exit_code is not 0:
+        print("EXIT CODE NOT {}".format(exit_code))
         sys.exit(exit_code)
     else:
         outfile = "{}/{}{}.{}".format(OUTPUT_DIR, outfilebasename, start_task, output_format)
+        print("OUTFILE {}".format(outfile))
         if not os.path.isfile(outfile):
             igi_file = find_igi(WORK_DIR)
             print(igi_file, file=sys.stdout)
