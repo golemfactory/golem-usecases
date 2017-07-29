@@ -1,0 +1,7 @@
+TODO:
+
+inaczej zrobić hashowanie:
+może dumpować na dysk i korzystać z jakiegoś utility? (ale wtedy za każdym razem trzeba dumpować i wołać oddzielne narzędzie, Popen, przy każdym batchu, co mocno spowalnia?)
+
+Zrobić klasę zajmującą się zapisem i odczytem danych z dysku, bo strasznie się syfi.
+Każdą epokę do osobnego katalogu, wywalić get_full_package

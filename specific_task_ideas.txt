@@ -1,0 +1,13 @@
+What we should do on golem to amaze the world? (like: what specifically, what dataset, what solution, what algorithms, what architectures?)
+
+Probably use Spearmint or Hyperopt or ... to find some metaparams.
+
+Maybe implement something from kaggle? We might implement one of the winning solutions - but: 
+ a) it can take a very long time (lots of ensembles)
+ b) I'm not an expert (and by comparision people would find bugs or sth)
+ 3) idk if we find a solution which depends heavily on metaparams search (and that's our bet for now)
+
+Tech used in last kaggles:
+R-CNN http://blog.kaggle.com/2017/07/07/the-nature-conservancy-fisheries-monitoring-competition-1st-place-winners-interview-team-towards-robust-optimal-learning-of-learning/ 
+3D-Convnets http://blog.kaggle.com/2017/06/29/2017-data-science-bowl-predicting-lung-cancer-2nd-place-solution-write-up-daniel-hammack-and-julian-de-wit/
+

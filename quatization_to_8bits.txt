@@ -1,0 +1,6 @@
+Quatization of neural network weights
+Changing the weighs from floating point to fixed point numbers in a clever way (not clipping - if all weigts in the net were ~1e-10, than after our not-very-smart-fix, we would end up with 0s everywhere. This is one potential solution (except just ofc converting to float16 or sth... :P ))
+
+https://petewarden.com/2016/05/03/how-to-quantize-neural-networks-with-tensorflow/
+
+It may be useful.
