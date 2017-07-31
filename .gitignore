@@ -3,6 +3,11 @@
 # idea files
 .idea/
 
+# models archives
+*.pth.tar
+.meta
+.index
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
