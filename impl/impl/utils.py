@@ -4,7 +4,7 @@ import random as rn
 import numpy as np
 import torch
 
-
+# TODO update derandom to take random seeds input stream
 def derandom(*args, **kwargs):
     os.environ['PYTHONHASHSEED'] = '0'
     np.random.seed(7)
