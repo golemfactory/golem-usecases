@@ -20,4 +20,5 @@ ARCH = "CPU"
 
 # hashing config
 HASHING_ALGORITHM = hashing_algorithm
-MAX_LAST_BYTES_NUM = hashing_algorithm.digest_size # size of output of HASHING_ALGORITHM
+# digest size computation
+MAX_LAST_BYTES_NUM = hashing_algorithm(b"aaa").digest_size
