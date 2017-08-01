@@ -15,10 +15,10 @@ SAVE_MODEL_AS_DICT = True
 # neural net config
 LEARNING_RATE = 0.01
 NUM_EPOCHS = 10
-HIDDEN_SIZE = 500
+HIDDEN_SIZE = 10
 ARCH = "CPU"
 
 # hashing config
 HASHING_ALGORITHM = hashing_algorithm
 # digest size computation
-MAX_LAST_BYTES_NUM = hashing_algorithm(b"aaa").digest_size
+MAX_LAST_BYTES_NUM = hashing_algorithm(b"something").digest_size

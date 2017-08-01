@@ -108,7 +108,7 @@ class ModelSerializer():
     def _get_current_model_hash(self):
         return self.model.get_model_hash(self.model)
 
-    def _get_path_to_save(self, epoch: int, ext):
+    def _get_path_to_save(self, model: Model, epoch: int, ext):
         # dir = "{}_{}".format(str(self.epoch), str(batch))
         dir = str(epoch)
         dir = os.path.join(self.shared_path, dir)
@@ -116,20 +116,21 @@ class ModelSerializer():
         if not os.path.exists(dir):
             os.makedirs(dir)
 
-        filename = str(self._get_current_model_hash()) + "." + ext
+        filename = str(model.get_hash()) + "." + ext
         return os.path.join(dir, filename)
 
+
     def save(self, epoch, state):
-        for model, ext in zip(state.get_start_end(), ["begin", "end"]):
-            filepath = self._get_path_to_save(epoch, ext=ext)
+        for mdl, ext in zip(state.get_start_end(), ["begin", "end"]):
+            filepath = self._get_path_to_save(mdl, epoch, ext=ext)
             if self.save_model_as_dict:
                 state_dict = {
                     "epoch": epoch,
                     # "minibatch": self.minibatch_num,
                     # "arch": config.ARCH,
-                    "network_state_dict": self.model.net.state_dict(),
-                    "optimizer_state_dict": self.model.optimizer.state_dict(),
-                    "model_kwargs": self.model.kwargs
+                    "network_state_dict": mdl.net.state_dict(),
+                    "optimizer_state_dict": mdl.optimizer.state_dict(),
+                    "model_kwargs": mdl.kwargs
                 }
                 torch.save(state_dict, filepath)
             else:
@@ -184,7 +185,7 @@ class HonestModelRunner(object):
             self.serializer.save(epoch, state)
 
 
-class DummyDishonestModelRunner(HonestModelRunner):
+class SkippingDishonestModelRunner(HonestModelRunner):
     def __init__(self, probability_of_cheating: float, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.probability_of_cheating = probability_of_cheating

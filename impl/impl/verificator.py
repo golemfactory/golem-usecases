@@ -2,7 +2,7 @@ import itertools
 import os
 
 import numpy as np
-from typing import Type
+from typing import Type, Tuple
 
 from impl import config, utils
 from impl.batchmanager import IrisBatchManager
@@ -10,9 +10,9 @@ from impl.model import ModelSerializer, IrisSimpleModel
 
 
 class Verificator(object):
-    def __init__(self, out_dir, expected_samples_num):
+    def __init__(self, out_dir, expected_samples_num: Tuple[float, float]):
         self.out_dir = out_dir
-        self.expected_samples_num = expected_samples_num
+        self.expected_samples_num, self.confidence_interval = expected_samples_num
 
     def verificate(self):
 
@@ -20,9 +20,12 @@ class Verificator(object):
         model: Type[IrisSimpleModel] = IrisSimpleModel
 
         files = os.listdir(self.out_dir)
-        if len(files) != self.expected_samples_num:
-            print("Wrong number of files in {}. Expected {}, got {}".format(
-                self.out_dir, self.expected_samples_num, len(files)
+
+        # we could care about number of samples only if it was smaller than what we expected
+        # but it is always worth to have some additional sanity check
+        if len(files) - self.expected_samples_num > self.confidence_interval:
+            print("Wrong number of files in {}. Expected {} +- {} (with 95% confidence interval), got {}".format(
+                self.out_dir, self.expected_samples_num, self.confidence_interval, len(files)
             ))
             return False
 
@@ -36,7 +39,7 @@ class Verificator(object):
             endmodel = serializer.load(endmodel_name)
 
             # hashes checking
-            htrue = str(model.get_model_hash(startmodel))
+            htrue = str(startmodel.get_hash())
             hname = self._get_hash_from_name(startmodel_name)
             if hname != htrue:
                 print("Wrong start model hash\n "
@@ -44,7 +47,7 @@ class Verificator(object):
                       "Got {}".format(hname, htrue))
                 return False
 
-            htrue = str(model.get_model_hash(endmodel))
+            htrue = str(endmodel.get_hash())
             hname = self._get_hash_from_name(endmodel_name)
             if hname != htrue:
                 print("Wrong start model hash\n "
@@ -62,7 +65,8 @@ class Verificator(object):
             if not self._compare_weights(startmodel, endmodel):
                 return False
 
-        print(utils.bcolors.BOLD + utils.bcolors.OKGREEN + "All tests passed" + utils.bcolors.ENDC)
+        print("All tests passed")
+        return True
 
     @staticmethod
     def _compare_weights(model1: IrisSimpleModel, model2: IrisSimpleModel):
