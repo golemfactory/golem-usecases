@@ -1,2 +1,0 @@
-1. Potrzebuję maszyny z GPU
-OK 2. Potrzebuję chmury do testów
