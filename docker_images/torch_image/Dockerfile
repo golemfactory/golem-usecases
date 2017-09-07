@@ -23,3 +23,5 @@ RUN conda install pytorch cuda80 -c soumith
 ENV NO_CUDA=1
 
 RUN conda install dill pandas scikit-learn
+
+RUN rm /usr/bin/python && ln -s /opt/conda/bin/python /usr/bin/python
