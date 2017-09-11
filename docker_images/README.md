@@ -6,4 +6,4 @@ To build them, you also need the `entrypoint.sh` script, - current version can b
 
 The binary versions can be downloaded from docker hub, respectively from:
   - `jacekjacekjacekg/mlbase`
-  - `jacekjacekjacek/mlspearmint`
+  - `jacekjacekjacekg/mlspearmint`
