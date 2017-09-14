@@ -15,7 +15,7 @@ SAVE_MODEL_AS_DICT = True
 # neural net config
 LEARNING_RATE = 0.01
 NUM_EPOCHS = 10
-HIDDEN_SIZE = 10
+HIDDEN_SIZE = 1000
 ARCH = "CPU"
 
 # hashing config
