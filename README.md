@@ -98,24 +98,25 @@ There are three distinct parts of the task:
 The workflow of the task:
  1. `MLPOCTaskDefinition` is constructed, method `add_to_resources` is called on it - and temporary directories structure is created (eg `code`, `data` files are linked or copied in appropriate places).
  2. `MLPOCTask` is constructed, taks variables are set.
- 3. `MLPOCTask` method `initialize()` is called, `LocalComputer` with `spearmint` image is constructed, directory structure is crated, along with `config` file specifying space to be searched (types and sizes of variables), and then `LocalComputer` is started.
+ 3. `MLPOCTask` method `initialize()` is called, `LocalComputer` with `spearmint` image is constructed, directory structure is crated, along with `config.cfg` file specifying parameters space to be searched (types and sizes of variables), and then `LocalComputer` is started.
  4. `MLPOCTask` is waiting for `query_additional_data` queries.
  5. If it gets one, it updates `spearmint` state, by using signal file - `spearmint` then adds a new row to the list of suggestions of next points.
- 6. `MLPOCTask` gets this new suggestion, adds constructs `"network_configuration"` dict entry in `extra_data`, which is a list in form of `[(variable_name, variable_value)]` and sends it to the provider - it is then saved in the `params.py`.
- 7. Provider starts working - `ModelRunner` is constructed and run - every epoch, it calls `box_callback` to check if he should save the dump of the current state transition. `box_callback` saves a message in the `$MESSAGES_OUT_DIR` directory, then it is actively waiting for response (a message in the `$MESSAGES_IN_DIR`).
- 8. In the meantime, `TaskServer` (on the providers side) is running in the loop, calling `sync_network` periodically. Inside, it calls `check_for_new_messages` on `TaskComputer`, which then calls it on all `DockerTaskThreads` in the current computations list, which then reads messages from `$MESSAGES_OUT_DIR`, packs them into structures and returns to `TaskServer`.
+ 6. `MLPOCTask` gets this new suggestion, constructs `"network_configuration"` dict entry in `extra_data`, which is a list in form of `[(variable_name, variable_value)]` and sends it to the provider - it is then saved in the `params.py`.
+ 7. Provider starts working - `ModelRunner` is constructed and run - every epoch, it calls `box_callback` to check if he should save the dump of the current state transition. 
+ 8. `box_callback` saves a message - the question to the requestor - in the `$MESSAGES_OUT_DIR` directory, then it is actively waiting for response (a message in the `$MESSAGES_IN_DIR`).
+ 9. In the meantime, `TaskServer` (on the providers side) is running in the loop, calling `sync_network` periodically. Inside, it calls `check_for_new_messages` on `TaskComputer`, which then calls it on all `DockerTaskThreads` in the current computations list, which then reads messages from `$MESSAGES_OUT_DIR`, packs them into structures and returns to `TaskServer`.
  `TaskServer` then collects all the messages from all current computations, packs them into `MessageProvToReqSubtask` and sends by appropriate `TaskSession`s to  TaskSessions of requestors.
- 6. `TaskSession` on requestor side receives message and reacts by `_react_to_provider_to_requestor_message()`, which runs `respond_to_message` method in the `MLPOCTask`.
- 7. `MLPOCTask` passes message contents (eg hash of the state) to subtask's-that-send-the-message `black_box`, receives answer (to save or not to save) and returns it to `TaskSession`.
- 8. `TaskSession` packs the response into `MessageReqToProvSubtask` and sends it to provider's 'TaskSession`.
- 9. Provider's TaskSession' reacts with `_react_to_requestor_to_provider_message`, unpacks the data, passes it into `TaskComputer.receive_message()` method, which then passes it into appropriate `DockerTaskThread` from `current_computations`, which then saves the requestors response data (containing answer `True/False` and some metadata) in the `$MESSAGE_IN_DIR`.
- 10. Then `box_callback` from **7** sees the message, reads it, informs `ModelRunner` if it should save the model or not. If it should, it saves model under `$OUTPUT_DIR/EPOCH_NUM/EPOCH_NUM-hash_of_begin_state.begin` and `$OUTPUT_DIR/EPOCH_NUM/EPOCH_NUM-hash_of_end_state.end` and  we are back at the step **7**.
- 11. When provider finishes work, he saves evaluation of the whole network under `$OUTPUT_DIR/results.score` json file, which contains a dict of one key: `{score: hyperparameters}`, where hyperparameters are these hyperparams got from `MLPOCTask` at the beginning of subtask.
- 12. Then, verificator is called, with these result files list. As the files are not transferred properly, but in the form of list of files (eg directory structure is lost), verificator class has to rebuild that.  
+ 10. `TaskSession` on requestor side receives message and reacts by `_react_to_provider_to_requestor_message()`, which runs `respond_to_message` method in the `MLPOCTask`.
+ 11. `MLPOCTask` passes message contents (eg hash of the state) to subtask's-that-send-the-message `black_box`, receives answer (to save or not to save) and returns it to `TaskSession`.
+ 12. `TaskSession` packs the response into `MessageReqToProvSubtask` and sends it to provider's 'TaskSession`.
+ 13. Provider's TaskSession' reacts with `_react_to_requestor_to_provider_message`, unpacks the data, passes it into `TaskComputer.receive_message()` method, which then passes it into appropriate `DockerTaskThread` from `current_computations`, which then saves the requestors response data (containing answer `True/False` and some metadata) in the `$MESSAGE_IN_DIR`.
+ 14. Then `box_callback` from **7** sees the message, reads it, informs `ModelRunner` if it should save the model or not. If it should, it saves model under `$OUTPUT_DIR/EPOCH_NUM/EPOCH_NUM-hash_of_begin_state.begin` and `$OUTPUT_DIR/EPOCH_NUM/EPOCH_NUM-hash_of_end_state.end` and  we are back at the step **7**.
+ 15. When provider finishes work, he saves evaluation of the whole network under `$OUTPUT_DIR/results.score` json file, which contains a dict of one key: `{score: hyperparameters}`, where hyperparameters are these hyperparams got from `MLPOCTask` at the beginning of subtask.
+ 16. Then, verificator is called, with these result files list. As the files are not transferred properly, but in the form of list of files (eg directory structure is lost), verificator class has to rebuild that.  
  In function `_check_files` it constructs `code_place`, `data_place` and `checkpoints` directories, copies or links files there and starts a `LocalComputer` docker process, with main src file `requestor_verification.py`.  
- 13. Inside docker, this script opens up each epoch directory, trains the `.begin` model for one epoch and checks if the result is the same as the `.end`. For now, it doesn't take into account the possibility of slight variation in results. It also checks if the model's hash is really the name of the file.
- 14. If every epoch was tested successfully, process exits with `code 0`. Otherwise, it throws `Exception` and exits with `code != 0`.
- 15. `CoreTask` takes care of later steps.
+ 17. Inside docker, this script opens up each epoch directory, trains the `.begin` model for one epoch and checks if the result is the same as the `.end`. For now, it doesn't take into account the possibility of slight variation in results. It also checks if the model's hash is really the name of the file.
+ 18. If every epoch was tested successfully, process exits with `code 0`. Otherwise, it throws `Exception` and exits with `code != 0`.
+ 19. `CoreTask` takes care of later steps.
 
 
 ## What's left to do
