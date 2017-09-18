@@ -1,19 +1,16 @@
-# Documentation for MLPOC task
-
 Table of Contents
 =================
 
-   * [Documentation for MLPOC task](#documentation-for-mlpoc-task)
-      * [Intro](#intro)
-      * [Idea](#idea)
-         * [Verification algorithm](#verification-algorithm)
-            * [Sketch](#sketch)
-            * [Problems](#problems)
-      * [Implementation](#implementation)
-         * [Description](#description)
-         * [Workflow](#workflow)
-      * [What's left to do](#whats-left-to-do)
-      * [Additional ideas, which are in infancy or something](#additional-ideas-which-are-in-infancy-or-something)
+  * [Intro](#intro)
+  * [Idea](#idea)
+     * [Verification algorithm](#verification-algorithm)
+        * [Sketch](#sketch)
+        * [Problems](#problems)
+  * [Implementation](#implementation)
+     * [Description](#description)
+     * [Workflow](#workflow)
+  * [What's left to do](#whats-left-to-do)
+  * [Additional ideas, which are in infancy or something](#additional-ideas-which-are-in-infancy-or-something)
 
 
 ## Intro
