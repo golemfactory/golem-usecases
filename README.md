@@ -1,5 +1,21 @@
 # Documentation for MLPOC task
 
+Table of Contents
+=================
+
+   * [Documentation for MLPOC task](#documentation-for-mlpoc-task)
+      * [Intro](#intro)
+      * [Idea](#idea)
+         * [Verification algorithm](#verification-algorithm)
+            * [Sketch](#sketch)
+            * [Problems](#problems)
+      * [Implementation](#implementation)
+         * [Description](#description)
+         * [Workflow](#workflow)
+      * [What's left to do](#whats-left-to-do)
+      * [Additional ideas, which are in infancy or something](#additional-ideas-which-are-in-infancy-or-something)
+
+
 ## Intro
 
 Machine learning on golem is quite difficult topic. We can't use any of the most-popular, off-the-shelf algorithms, like neural networks, because they are not designed to work in highly parallel, distributed manner (there is of course something like Distributed Gradient Descent algorithms, but they do not work well in the environment with so high latencies as Golem).
@@ -122,7 +138,7 @@ The most basic task is finished, but there are still areas in which it should be
   - Controlling for randomness
   - Saving batch order during training (in some file besides `.begin` and `.end` model files.)
   - Reading batch order during verification
- 
+
  - Implement cross validation
  - Inheriting from `DummyTask`
  - Asynchronous reading and writing messages during training, in the `box_callback.py`.
