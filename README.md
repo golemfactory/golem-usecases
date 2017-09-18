@@ -67,7 +67,10 @@ Implementation of neural network training is done in `PyTorch`. It was chosen af
 
 Implementation of hyperparameters search is done in `spearmint`. It was also chosen after a careful consideration: bayesian optimization has strong mathematical foundations, so there is a lot that can be done to extend the solution and reason about it, the license is ok, the comparision between hyperparameters-tuning software maybe doesn't really favour `spearmint`, but differences are not too big [(see paper here)](http://www.cs.ubc.ca/~hutter/papers/13-BayesOpt_EmpiricalFoundation.pdf). There is also a great advantage of simplicity - `spearmint` can be run in the special `spearmint-lite` mode, which is a single python file (plus some dependencies), which does all computations. All the communications is done by updating file, which is a great convinience, when we have to communicate between docker container and task running outside container.
 
+
+### Description 
 There are three distinct parts of the task:
+
  1. Training part: it is done inside docker container, on provider's machine. Main script: `provider_main.py`. The code for that is under `mlpoc/resources/impl/`. To understand this part, you don't need any knowledge about other parts, only how the algorithm of verification works.
  The code is put under `$RESOURCES_DIR/code`, data - under `$RESOURCES_DIR/data`. Then paths are added to python syspath and code is executed. 
  Since currently only the basic verification algorithm is implemented - with black box on the requestors machine - provider needs a way of communicating with requestor. It is done by messages - outcoming messages files are placed under `$MESSAGE_OUT_DIR` and incoming are read from `$MESSAGE_IN_DIR`.
@@ -77,6 +80,7 @@ There are three distinct parts of the task:
  3. Verification part: it is done inside docker container on the requestor's machine. The script for that is `requestor_verification.py`. It is run after getting results from training - the before- and after- (`.begin` and `end`) files are placed under "$RESOURCES_DIR/checkpoints" (code - as before - under `$RESOURCES_DIR/code`, data under `$RESOURCES_DIR/data`).
 
 ---
+### Workflow
 
 The workflow of the task:
  1. `MLPOCTaskDefinition` is constructed, method `add_to_resources` is called on it - and temporary directories structure is created (eg `code`, `data` files are linked or copied in appropriate places).
@@ -114,7 +118,11 @@ The most basic task is finished, but there are still areas in which it should be
  - Replacing docker mlbase image with something with CUDA support (like https://github.com/anibali/docker-pytorch/blob/master/cuda-8.0/Dockerfile). Important note - it's not that simple as copying the Dockerfile from link, as it should also inherit from `golemfactory/base`.
  - Keeping track of all randomness reduction. Key function - `derandom()` - is called in many places in the code, to reduce amount of randomness and allow us to verify steps of training.
  For now, it is just setting constant seeds in python random number generators - but in the future, we would like to have a stream of random bytes, either saved as a list in params.py, or received in messages from online requestor.
- - Implement batch ordering and verification
+ - Implement batch ordering and verification - for now, we don't do anything to prevent cyclic buffer attack. It requires a few things:
+  - Controlling for randomness
+  - Saving batch order during training (in some file besides `.begin` and `.end` model files.)
+  - Reading batch order during verification
+ 
  - Implement cross validation
  - Inheriting from `DummyTask`
  - Asynchronous reading and writing messages during training, in the `box_callback.py`.
