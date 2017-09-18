@@ -40,7 +40,7 @@ From [wiki (private golem repo)](https://github.com/imapp-pl/golem_rd/wiki/Verif
 *We are now focusing on a subclass of sequential tasks, in which there is a possibility of dumping the program state and then restoring it for computation later on (so, for example, it is possible in case of machine learning algorithms, because the state is usually explicitly represented as some collection of matrices and seeds for rand() functions, and is quite hard in case of webserver, where state is implicitly represented as incoming connections, data stored in databases and so on).*
 
 #### Sketch
-The description (there are a few simplifications here) of algorithm in a tl;dr:
+The description (there are a few simplifications here) of algorithm in a **TL;DR**:
 
  1. Requestor sends a task to provider.
  2. Provider runs steps (epochs of training) sequentially.
@@ -62,7 +62,7 @@ The [full description (private golem repo)](https://github.com/imapp-pl/golem_rd
 1. Cyclic buffer
   First important problem is that while we are only checking single steps of solution and not some larger portions, there is a threat of attacker constructing a cyclic buffer of honest steps and then feeding it to the algorithm.  
   A deeper analysis of the problem, along with two possible solutions (**A** and **B**), is [here (private golem repo)](https://github.com/imapp-pl/golem_rd/wiki/Cyclic-buffer-problem). As the solution **A** is much more easier to implement (but at a cost of being much more less general) - it was chosen to be implemented in the task.  
-  Solution in tl;dr: We are removing the possibilty of creating cyclic buffers by creating a stream of input data, where there are no cycles in the input stream - so the states are also non-periodic.
+  Solution in **TL;DR**: We are removing the possibilty of creating cyclic buffers by creating a stream of input data, where there are no cycles in the input stream - so the states are also non-periodic.
 
 2. Growing memory
   The algorithm in the current form forces user to dump a number of states. As programs' states can be very big - especially in the context of neural network (for details, see analysis [here (private golem repo)](https://github.com/imapp-pl/golem-usecases/blob/machine_learning/memory_check/memo.ipynb)).  
@@ -76,7 +76,7 @@ The [full description (private golem repo)](https://github.com/imapp-pl/golem_rd
 
 ## Implementation
 
-Implementation of neural network training is done in `PyTorch`. It was chosen after a careful consideration, [this repository (inexxt private repo)](https://github.com/inexxt/golem_rd/tree/master/ml_task) contains a rather unstructured recording of experiments done, plus a number of arugments for and agains each popular framework. tl;dr the main reason was the ability to handle randomness easily (so `keras` was out) and then the ease of extending and debugging (so `TF` was out).
+Implementation of neural network training is done in `PyTorch`. It was chosen after a careful consideration, [this repository (inexxt private repo)](https://github.com/inexxt/golem_rd/tree/master/ml_task) contains a rather unstructured recording of experiments done, plus a number of arugments for and agains each popular framework. **TL;DR** the main reason was the ability to handle randomness easily (so `keras` was out) and then the ease of extending and debugging (so `TF` was out).
 
 Implementation of hyperparameters search is done in `spearmint`. It was also chosen after a careful consideration: bayesian optimization has strong mathematical foundations, so there is a lot that can be done to extend the solution and reason about it, the license is ok, the comparision between hyperparameters-tuning software maybe doesn't really favour `spearmint`, but differences are not too big [(see paper here)](http://www.cs.ubc.ca/~hutter/papers/13-BayesOpt_EmpiricalFoundation.pdf). There is also a great advantage of simplicity - `spearmint` can be run in the special `spearmint-lite` mode, which is a single python file (plus some dependencies), which does all computations. All the communications is done by updating file, which is a great convinience, when we have to communicate between docker container and task running outside container.
 
