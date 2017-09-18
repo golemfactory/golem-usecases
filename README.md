@@ -59,16 +59,16 @@ The [full description (private golem repo)](https://github.com/imapp-pl/golem_rd
 
 #### Problems
 
-1. Cyclic buffer
+1. Cyclic buffer  
   First important problem is that while we are only checking single steps of solution and not some larger portions, there is a threat of attacker constructing a cyclic buffer of honest steps and then feeding it to the algorithm.  
   A deeper analysis of the problem, along with two possible solutions (**A** and **B**), is [here (private golem repo)](https://github.com/imapp-pl/golem_rd/wiki/Cyclic-buffer-problem). As the solution **A** is much more easier to implement (but at a cost of being much more less general) - it was chosen to be implemented in the task.  
   Solution in **TL;DR**: We are removing the possibilty of creating cyclic buffers by creating a stream of input data, where there are no cycles in the input stream - so the states are also non-periodic.
 
-2. Growing memory
+2. Growing memory  
   The algorithm in the current form forces user to dump a number of states. As programs' states can be very big - especially in the context of neural network (for details, see analysis [here (private golem repo)](https://github.com/imapp-pl/golem-usecases/blob/machine_learning/memory_check/memo.ipynb)).  
   But, employing some analysis of rational-agent behaviour in context of Golem, it can be showed that our memory requirements are in fact very low - see analysis [here (private golem repo)(for now in polish)(not yet reviewed)(looks better locally, github doesn't render latex properly)](https://github.com/imapp-pl/golem-usecases/blob/machine_learning/memory_check/szacunek.ipynb)
 
-3. Seeing-results-before-paying
+3. Seeing-results-before-paying  
   The obvious problem with this solution is that requestor can lie about corectness of the solution - eg, say that it doesn't work, when in fact it was working - not pay, and steal the solution (since he has 995/1000 step, he has in fact the whole solution).  
   The solution for that is to have a deposit and some node doing **additional verification** - when requestor does something like this, provider talks to the escrow service and it burns requestor's deposit. Since it is guaranteed that punishment will happen - provider knows that he is honest, and has all the communications with requestor signed, so he can prove his case - reqestor won't do that at all.  
   Other solutions can possibly involve `FHE` or something like that, but it is problably hard to do at the moment.  
