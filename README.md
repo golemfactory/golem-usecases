@@ -2,11 +2,11 @@ Table of Contents
 =================
 
   * [Intro](#intro)
-  * [Idea](#idea)
+  * [Idea](#idea) - conceptual things
      * [Verification algorithm](#verification-algorithm)
         * [Sketch](#sketch)
         * [Problems](#problems)
-  * [Implementation](#implementation)
+  * [Implementation](#implementation) - concrete implementation things
      * [Description](#description)
      * [Workflow](#workflow)
   * [What's left to do](#whats-left-to-do)
@@ -19,7 +19,7 @@ Machine learning on golem is quite difficult topic. We can't use any of the most
 
 So, instead of training one network in distributed way, we focused on finding best set of metaparameters for a given model and data - *hyperparameters search*.
 
-In the long run, there should be a switch to some external service providing tools for model selection and training, as `MLJar` or `SigOpt` and only doing verification and distribution of computations on our side.
+In the long run, there should be a switch to some external service providing tools for model selection and training, as [MLJar](https://mljar.com/) or [SigOpt](https://sigopt.com/) and only doing verification and distribution of computations on our side.
 
 ## Idea
 
@@ -61,7 +61,7 @@ The [full description (private golem repo)](https://github.com/imapp-pl/golem_rd
 
 1. Cyclic buffer  
   First important problem is that while we are only checking single steps of solution and not some larger portions, there is a threat of attacker constructing a cyclic buffer of honest steps and then feeding it to the algorithm.  
-  A deeper analysis of the problem, along with two possible solutions (**A** and **B**), is [here (private golem repo)](https://github.com/imapp-pl/golem_rd/wiki/Cyclic-buffer-problem). As the solution **A** is much more easier to implement (but at a cost of being much more less general) - it was chosen to be implemented in the task.  
+  A deeper analysis of the problem, along with two possible solutions (**A** and **B**), is [here (private golem repo)](https://github.com/imapp-pl/golem_rd/wiki/Cyclic-buffer-problem). As the solution **A** is easier to implement (but at a cost of being less general) - it was chosen to be implemented in the task.  
   Solution in **TL;DR**: We are removing the possibilty of creating cyclic buffers by creating a stream of input data, where there are no cycles in the input stream - so the states are also non-periodic.
 
 2. Growing memory  
@@ -78,12 +78,12 @@ The [full description (private golem repo)](https://github.com/imapp-pl/golem_rd
 
 ## Implementation
 
-Implementation of neural network training is done in `PyTorch`. It was chosen after a careful consideration, [this repository (inexxt private repo)](https://github.com/inexxt/golem_rd/tree/master/ml_task) contains a rather unstructured recording of experiments done, plus a number of arugments for and agains each popular framework. **TL;DR** the main reason was the ability to handle randomness easily (so `keras` was out) and then the ease of extending and debugging (so `TF` was out). 
+Implementation of neural network training is done in `PyTorch`. It was chosen after a careful consideration, [this repository (inexxt private repo)](https://github.com/inexxt/golem_rd/tree/master/ml_task) contains a rather unstructured recording of experiments done, plus a number of arugments for and agains each popular framework. **TL;DR** the main reason was the ability to handle randomness easily (so `keras` was out) and then the ease of extending and debugging (so `TF` was out).  
 Docker image for this part is available under `golemfactory/mlbase` dockerhub, Dockerfile - under `apps/mlpoc/resources/images/Dockerfile_torch`. It's fairly generic (maybe without that pytorch installation line), downloading `anaconda` distribution and swapping `/usr/bin/python` with version from `conda`.
 
 
-Implementation of hyperparameters search is done in `spearmint`. It was also chosen after a careful consideration: bayesian optimization has strong mathematical foundations, so there is a lot that can be done to extend the solution and reason about it, the license is ok, the comparision between hyperparameters-tuning software maybe doesn't really favour `spearmint`, but differences are not too big [(see paper here)](http://www.cs.ubc.ca/~hutter/papers/13-BayesOpt_EmpiricalFoundation.pdf). There is also a great advantage of simplicity - `spearmint` can be run in the special `spearmint-lite` mode, which is a single python file (plus some dependencies), which does all computations. All the communications is done by updating file, which is a great convinience, when we have to communicate between docker container and task running outside container.
-Docker image for this part is available under `golemfactory/mlspearmint` dockerhub, Dockerfile - under `apps/mlpoc/resources/images/Dockerfile_spearmint`. It's very different than `mlbase`, because development of this version of `spearmint` was ceased a long time ago. (after that they moved to more restrictive license).
+Implementation of hyperparameters search is done in `spearmint`. It was also chosen after a careful consideration: bayesian optimization has strong mathematical foundations, so there is a lot that can be done to extend the solution and reason about it, the license is ok, the comparision between hyperparameters-tuning software maybe doesn't really favour `spearmint`, but differences are not too big [(see paper here)](http://www.cs.ubc.ca/~hutter/papers/13-BayesOpt_EmpiricalFoundation.pdf). There is also a great advantage of simplicity - `spearmint` can be run in the special `spearmint-lite` mode, which is a single python file (plus some dependencies), which does all computations. All the communications is done by updating file, which is a great convinience, when we have to communicate between docker container and task running outside container.  
+Docker image for this part is available under `golemfactory/mlspearmint` dockerhub, Dockerfile - under `apps/mlpoc/resources/images/Dockerfile_spearmint`. It's very different than `mlbase`, because development of this version of `spearmint` was ceased a long time ago. (after that they moved to more restrictive license), so we can't use off-the-shelf `anaconda` distribution.
 
 
 
@@ -91,23 +91,25 @@ Docker image for this part is available under `golemfactory/mlspearmint` dockerh
 There are three distinct parts of the task:
 
  1. Training part: it is done inside docker container, on provider's machine. Main script: `provider_main.py`. The code for that is under `mlpoc/resources/impl/`. To understand this part, you don't need any knowledge about other parts, only how the algorithm of verification works.
- The code is put under `$RESOURCES_DIR/code`, data - under `$RESOURCES_DIR/data`. Then paths are added to python syspath and code is executed. 
+ Inside docker container, code for training the network is put under `$RESOURCES_DIR/code`, data - under `$RESOURCES_DIR/data`.  
  Since currently only the basic verification algorithm is implemented - with black box on the requestors machine - provider needs a way of communicating with requestor. It is done by messages - outcoming messages files are placed under `$MESSAGE_OUT_DIR` and incoming are read from `$MESSAGE_IN_DIR`.
  2. Parameters search part: it is done inside docker container, but this time on the requestor's machine. Main script: `docker_spearmint.py`. Although it could be in principle done on the provider's machine as well (since `spearmint` can be quite resources-heave), it is not clear what are the dangers of that (colluding problem). The main script waits for a special signal file - when it is found, it runs an appropriate shell command to run `spearmint-lite` update and then deletes the signal file.
  Signal files are not managed by any message framework, because it is only implemented for `DockerJob` and not for `LocalComputer`.
  The code for this part is also found in the `spearmint_utils.py` file - there are all functions for creating signals, reading results, updating config file etc.  
- 3. Verification part: it is done inside docker container on the requestor's machine. Main script: `requestor_verification.py`. It is run after getting results from training - the before- and after- (`.begin` and `end`) files are placed under "$RESOURCES_DIR/checkpoints" (code - as before - under `$RESOURCES_DIR/code`, data under `$RESOURCES_DIR/data`).
+ 3. Verification part: it is done inside docker container on the requestor's machine. Main script: `requestor_verification.py`. It is run after getting results from training. Checkpoint files for verification are placed under "$RESOURCES_DIR/checkpoints" (code - as before - under `$RESOURCES_DIR/code`, data under `$RESOURCES_DIR/data`).
 
-### Workflow
+### Full workflow
 
 The workflow of the task:
- 1. `MLPOCTaskDefinition` is constructed, method `add_to_resources` is called on it - and temporary directories structure is created (eg `code`, `data` files are linked or copied in appropriate places).
+ 1. `golemcli` is started, then after some core-level stuff `MLPOCTaskBuilder` is created and feeded with dictionary containing data from `ml.json` input file.
+ 2. `MLPOCTaskBuilder` builds `MLPOCTaskDefinition`, constructing `MLPOCTaskOptions`, casting types etc (in `build_full_definition`).
+ 1. After `MLPOCTaskDefinition` is constructed, its method `add_to_resources` is called - temporary directories structure for task execution is created (eg `code`, `data` files are linked or copied in appropriate places).
  2. `MLPOCTask` is constructed, taks variables are set.
  3. `MLPOCTask` method `initialize()` is called, `LocalComputer` with `spearmint` image is constructed, directory structure is crated, along with `config.cfg` file specifying parameters space to be searched (types and sizes of variables), and then `LocalComputer` is started.
  4. `MLPOCTask` is waiting for `query_additional_data` queries.
  5. If it gets one, it updates `spearmint` state, by using signal file - `spearmint` then adds a new row to the list of suggestions of next points.
  6. `MLPOCTask` gets this new suggestion, constructs `"network_configuration"` dict entry in `extra_data`, which is a list in form of `[(variable_name, variable_value)]` and sends it to the provider - it is then saved in the `params.py`.
- 7. Provider starts working - `ModelRunner` is constructed and run - every epoch, it calls `box_callback` to check if he should save the dump of the current state transition. 
+ 7. **START** Provider starts working - `ModelRunner` is constructed and run - every epoch, it calls `box_callback` to check if he should save the dump of the current state transition. 
  8. `box_callback` saves a message - the question to the requestor - in the `$MESSAGES_OUT_DIR` directory, then it is actively waiting for response (a message in the `$MESSAGES_IN_DIR`).
  9. In the meantime, `TaskServer` (on the providers side) is running in the loop, calling `sync_network` periodically. Inside, it calls `check_for_new_messages` on `TaskComputer`, which then calls it on all `DockerTaskThreads` in the current computations list, which then reads messages from `$MESSAGES_OUT_DIR`, packs them into structures and returns to `TaskServer`.
  `TaskServer` then collects all the messages from all current computations, packs them into `MessageProvToReqSubtask` and sends by appropriate `TaskSession`s to  TaskSessions of requestors.
@@ -115,7 +117,7 @@ The workflow of the task:
  11. `MLPOCTask` passes message contents (eg hash of the state) to subtask's-that-send-the-message `black_box`, receives answer (to save or not to save) and returns it to `TaskSession`.
  12. `TaskSession` packs the response into `MessageReqToProvSubtask` and sends it to provider's 'TaskSession`.
  13. Provider's TaskSession' reacts with `_react_to_requestor_to_provider_message`, unpacks the data, passes it into `TaskComputer.receive_message()` method, which then passes it into appropriate `DockerTaskThread` from `current_computations`, which then saves the requestors response data (containing answer `True/False` and some metadata) in the `$MESSAGE_IN_DIR`.
- 14. Then `box_callback` from **7** sees the message, reads it, informs `ModelRunner` if it should save the model or not. If it should, it saves model under `$OUTPUT_DIR/EPOCH_NUM/EPOCH_NUM-hash_of_begin_state.begin` and `$OUTPUT_DIR/EPOCH_NUM/EPOCH_NUM-hash_of_end_state.end` and  we are back at the step **7**.
+ 14. Then `box_callback` from **7** sees the message, reads it, informs `ModelRunner` if it should save the model or not. If it should, it saves model under `$OUTPUT_DIR/EPOCH_NUM/EPOCH_NUM-hash_of_begin_state.begin` and `$OUTPUT_DIR/EPOCH_NUM/EPOCH_NUM-hash_of_end_state.end` and  we are back at the step **START**.
  15. When provider finishes work, he saves evaluation of the whole network under `$OUTPUT_DIR/results.score` json file, which contains a dict of one key: `{score: hyperparameters}`, where hyperparameters are these hyperparams got from `MLPOCTask` at the beginning of subtask.
  16. Then, verificator is called, with these result files list. As the files are not transferred properly, but in the form of list of files (eg directory structure is lost), verificator class has to rebuild that.  
  In function `_check_files` it constructs `code_place`, `data_place` and `checkpoints` directories, copies or links files there and starts a `LocalComputer` docker process, with main src file `requestor_verification.py`.  
