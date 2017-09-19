@@ -1,4 +1,4 @@
-Table of Contents
+ML task - description
 =================
 
   * [Intro](#intro)
@@ -74,8 +74,6 @@ The [full description (private golem repo)](https://github.com/imapp-pl/golem_rd
   Other solutions can possibly involve `FHE` or something like that, but it is problably hard to do at the moment.  
   Important note: many times, independently, people thought that a good solution for this problem would be to pay for results as soon as they arrive, using something like *atomic swap*. However, it is not going to work, since the algorithm (read the analysis) depends on the fact that it is hard to cheat and not be caught *in the long run* - if we were to pay for every successful compitation before the end of computations, we would lose this advantage and the whole algorithm would be useless.
 
----
-
 ## Implementation
 
 Implementation of neural network training is done in `PyTorch`. It was chosen after a careful consideration, [this repository (inexxt private repo)](https://github.com/inexxt/golem_rd/tree/master/ml_task) contains a rather unstructured recording of experiments done, plus a number of arugments for and agains each popular framework. **TL;DR** the main reason was the ability to handle randomness easily (so `keras` was out) and then the ease of extending and debugging (so `TF` was out).  
@@ -139,36 +137,32 @@ The order of these commands is important! It is done this way because golem star
 
 `$TMPDIR_PRV` and `$TMPDIR_REQ` are just some temporary directories (can be anything, can be even not exitsing ones - golem will create them).
 
-So, when you have two golem instances started, you can submit the task by running 
-```golemcli tasks create $GOLEM_HOME/apps/mlpoc/test_data/ml.json```
-This `json` file contains some parameters of the task (you're free to modify it) and it's the only way to start before appropriate GUI part will be created.
+So, when you have two golem instances started, you can submit the task by running  
+```
+golemcli tasks create $GOLEM_HOME/apps/mlpoc/test_data/ml.json
+```
+This `json` file contains some parameters of the task (you're free to modify it) and it's the only way to start before appropriate GUI module will be created.
 
----
 
 ## What's left to do
 The most basic task is finished, but there are still areas in which it should be significantly improved:
- - Creating function to test the network and output score, which should be returned in the provider_main.py/evaluate_network() - for now, it just outputs 1.0, shouln't be difficult
- - Moving docker images from jacekjacekjacekg to golemfactory hub
+ - Creating function to test the network and output score, which should be returned in the provider_main.py/evaluate_network() - for now, it 
+ just outputs 1.0, shouln't be difficult
+ - Implement cross validation inside this function.
  - Returning result
  - Comparing hashes with these saved in blackbox
 
-
- - Adding more flexible parameters search system (for now there is hardcoded rule for only one parameter - hidden layer size) - there should be some config file for that.
- - Adding more flexible system for model/batch manager uploading (they should be in the input files, not hardcoded in the mlpoc app)
- - Replacing docker mlbase image with something with CUDA support (like https://github.com/anibali/docker-pytorch/blob/master/cuda-8.0/Dockerfile). Important note - it's not that simple as copying the Dockerfile from link, as it should also inherit from `golemfactory/base`.
- - Keeping track of all randomness reduction. Key function - `derandom()` - is called in many places in the code, to reduce amount of randomness and allow us to verify steps of training.
- For now, it is just setting constant seeds in python random number generators - but in the future, we would like to have a stream of random bytes, either saved as a list in params.py, or received in messages from online requestor.
- - Implement batch ordering and verification - for now, we don't do anything to prevent cyclic buffer attack. It requires a few things:
-  - Controlling for randomness
-  - Saving batch order during training (in some file besides `.begin` and `.end` model files.)
-  - Reading batch order during verification
-
- - Implement cross validation
- - `MLPOCTask` inheriting from `DummyTask`
- - Asynchronous reading and writing messages during training, in the `box_callback.py`.
- - Add messages system to `LocalComputer` (currently it is only added to `DockerTaskThread`)
- - Asynchronous verification, as in the https://github.com/golemfactory/golem/pull/1333
+Issues:
+ - [Issue #114 (private golem repo)](https://github.com/imapp-pl/golem_rd/issues/114)
+ - [Issue #115 (private golem repo)](https://github.com/imapp-pl/golem_rd/issues/115)
+ - [Issue #116 (private golem repo)](https://github.com/imapp-pl/golem_rd/issues/116)
+ - [Issue #117 (private golem repo)](https://github.com/imapp-pl/golem_rd/issues/117)
+ - [Issue #118 (private golem repo)](https://github.com/imapp-pl/golem_rd/issues/118)
+ - [Issue #119 (private golem repo)](https://github.com/imapp-pl/golem_rd/issues/119)
+ - [Issue #120 (private golem repo)](https://github.com/imapp-pl/golem_rd/issues/120)
+ - [Issue #121 (private golem repo)](https://github.com/imapp-pl/golem_rd/issues/121)
+ - [Issue #122 (private golem repo)](https://github.com/imapp-pl/golem_rd/issues/122)
  
-## Additional ideas, which are in infancy and things
+Additional ideas:
 
 Bayesian modelling as a way of reducing verification steps
