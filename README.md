@@ -145,24 +145,21 @@ This `json` file contains some parameters of the task (you're free to modify it)
 
 
 ## What's left to do
-The most basic task is finished, but there are still areas in which it should be significantly improved:
- - Creating function to test the network and output score, which should be returned in the provider_main.py/evaluate_network() - for now, it 
- just outputs 1.0, shouln't be difficult
- - Implement cross validation inside this function.
- - Returning result
- - Comparing hashes with these saved in blackbox
+The most basic task is finished, but there are still areas in which it should be significantly improved.
 
-Issues:
- - [Issue #114 (private golem repo)](https://github.com/imapp-pl/golem_rd/issues/114)
- - [Issue #115 (private golem repo)](https://github.com/imapp-pl/golem_rd/issues/115)
- - [Issue #116 (private golem repo)](https://github.com/imapp-pl/golem_rd/issues/116)
- - [Issue #117 (private golem repo)](https://github.com/imapp-pl/golem_rd/issues/117)
- - [Issue #118 (private golem repo)](https://github.com/imapp-pl/golem_rd/issues/118)
- - [Issue #119 (private golem repo)](https://github.com/imapp-pl/golem_rd/issues/119)
- - [Issue #120 (private golem repo)](https://github.com/imapp-pl/golem_rd/issues/120)
- - [Issue #121 (private golem repo)](https://github.com/imapp-pl/golem_rd/issues/121)
- - [Issue #122 (private golem repo)](https://github.com/imapp-pl/golem_rd/issues/122)
+Issues (private golem repo):
+ - [Issue #114 GPU support for MLPOCTask](https://github.com/imapp-pl/golem_rd/issues/114)
+ - [Issue #115 Controlling randomness in MLPOCTask](https://github.com/imapp-pl/golem_rd/issues/115)
+ - [Issue #116 Cross validation and train-test split in MLPOCTask](https://github.com/imapp-pl/golem_rd/issues/116)
+ - [Issue #117 Model and data flexibility in MLPOCTask](https://github.com/imapp-pl/golem_rd/issues/117)
+ - [Issue #118 MLPOCTask should inherit from DummyTask](https://github.com/imapp-pl/golem_rd/issues/118)
+ - [Issue #119 Calling black box asynchronously in MLPOCTask](https://github.com/imapp-pl/golem_rd/issues/119)
+ - [Issue #120 Asynchronous verification in MLPOCVerificator](https://github.com/imapp-pl/golem_rd/issues/120)
+ - [Issue #121 Hashing network in MLPOCTask](https://github.com/imapp-pl/golem_rd/issues/121)
+ - [Issue #122 Batch ordering and verification in MLPOCTask](https://github.com/imapp-pl/golem_rd/issues/122)
  
 Additional ideas:
 
-Bayesian modelling as a way of reducing verification steps
+ - Bayesian modelling as a way of reducing verification steps  
+ Since we are using bayesian optimizer anyway, we have access to information about *how much are we suprized with this particular network score*, where score is this final score on test set. This can be used to additionally improve verification in big-scale tasks - the probability of being checked would be somehow proportional to the degree of our "suprize".   
+ Implementation-wise, it would probably require extracting probability distributions from inside `spearmint`.
