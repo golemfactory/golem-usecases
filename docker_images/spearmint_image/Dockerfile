@@ -18,6 +18,6 @@ RUN cd /opt && \
 RUN apt-get install -y libblas-dev liblapack-dev liblapacke-dev gfortran && \
 	yes | pip install numpy scipy protobuf
 
-ENV PYTHONPATH "/opt/spearmint/spearmint/spearmint:/opt/spearmint/spearmint:/opt/spearmint"
+RUN pip install weave
 
-RUN rm /usr/bin/python && ln -s /opt/conda/bin/python /usr/bin/python
+ENV PYTHONPATH "/opt/spearmint/spearmint/spearmint:/opt/spearmint/spearmint:/opt/spearmint"
