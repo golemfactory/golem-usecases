@@ -105,14 +105,15 @@ The workflow of the task:
  2. `MLPOCTaskBuilder` builds `MLPOCTaskDefinition`, constructing `MLPOCTaskOptions`, casting types etc (in `build_full_definition`).
  1. After `MLPOCTaskDefinition` is constructed, its method `add_to_resources` is called - temporary directories structure for task execution is created (eg `code`, `data` files are linked or copied in appropriate places).
  2. `MLPOCTask` is constructed, taks variables are set.
- 3. `MLPOCTask` method `initialize()` is called, `LocalComputer` with `spearmint` image is constructed, directory structure is crated, along with `config.cfg` file specifying parameters space to be searched (types and sizes of variables), and then `LocalComputer` is started.
+ 3. `MLPOCTask` method `initialize()` is called, `LocalComputer` with `spearmint` image is constructed, directory structure for `spearmint` is crated, along with `config.cfg` file specifying parameters space to be searched (types and sizes of variables), and then `LocalComputer` is started.
  4. `MLPOCTask` is waiting for `query_additional_data` queries.
  5. If it gets one, it updates `spearmint` state, by using signal file - `spearmint` then adds a new row to the list of suggestions of next points.
  6. `MLPOCTask` gets this new suggestion, constructs `"network_configuration"` dict entry in `extra_data`, which is a list in form of `[(variable_name, variable_value)]` and sends it to the provider - it is then saved in the `params.py`.
- 7. **START** Provider starts working - `ModelRunner` is constructed and run - every epoch, it calls `box_callback` to check if he should save the dump of the current state transition. 
+ 7.  Provider starts working - `ModelRunner` is constructed and run.
+ 8. **START** Every epoch, it calls `box_callback` to check if he should save the dump of the current state transition. 
  8. `box_callback` saves a message - the question to the requestor - in the `$MESSAGES_OUT_DIR` directory, then it is actively waiting for response (a message in the `$MESSAGES_IN_DIR`).
- 9. In the meantime, `TaskServer` (on the providers side) is running in the loop, calling `sync_network` periodically. Inside, it calls `check_for_new_messages` on `TaskComputer`, which then calls it on all `DockerTaskThreads` in the current computations list, which then reads messages from `$MESSAGES_OUT_DIR`, packs them into structures and returns to `TaskServer`.
- `TaskServer` then collects all the messages from all current computations, packs them into `MessageProvToReqSubtask` and sends by appropriate `TaskSession`s to  TaskSessions of requestors.
+ 9. In the meantime, `TaskServer` (on the providers side) is running in the loop, calling `sync_network` periodically. Inside, it calls `check_for_new_messages` on `TaskComputer`, which then calls it on all `DockerTaskThreads` in the current computations list, which then read messages from `$MESSAGES_OUT_DIR`, pack them into structures and return to `TaskServer`.
+ 10. `TaskServer` then collects all the messages from all current computations, packs them into `MessageProvToReqSubtask` messages and sends by appropriate `TaskSession`s to  TaskSessions of requestors.
  10. `TaskSession` on requestor side receives message and reacts by `_react_to_provider_to_requestor_message()`, which runs `respond_to_message` method in the `MLPOCTask`.
  11. `MLPOCTask` passes message contents (eg hash of the state) to subtask's-that-send-the-message `black_box`, receives answer (to save or not to save) and returns it to `TaskSession`.
  12. `TaskSession` packs the response into `MessageReqToProvSubtask` and sends it to provider's 'TaskSession`.
@@ -127,10 +128,12 @@ The workflow of the task:
 
 ### Running
 
-To run the task, you need to checkout the `ml_task` branch from main golem repository (is not yet merged yet).
+To run the task, you need to checkout the `ml_task` branch from main golem repository (if it is not merged yet).
 Then, run two instances of Golem with 
-```python golemapp.py --datadir $TMPDIR_PRV -r 127.0.0.1:61002 --nogui
-python golemapp.py --datadir $TMPDIR_REQ -r 127.0.0.1:61000 --nogui -p 127.0.0.1:40102```
+```
+python golemapp.py --datadir $TMPDIR_PRV -r 127.0.0.1:61002 --nogui
+python golemapp.py --datadir $TMPDIR_REQ -r 127.0.0.1:61000 --nogui -p 127.0.0.1:40102
+```
 
 The order of these commands is important! It is done this way because golem starts its first instance under `40102` port. We're using different protocol versions than the rest of the golem (`TASK_PROTOCOL_ID=51` and `P2P_PROTOCOL_ID=41`), so Golem requestor node wouldn't be able to discover the provider node if not the hardcoded seed. The reason to use different protocol versions is to make debugging easier - you can set up your IDE to run these commands in debug mode, and then you can debug the code with no other nodes constantly asking for tasks headers etc.
 
