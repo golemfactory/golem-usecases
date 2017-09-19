@@ -160,6 +160,6 @@ Issues (private golem repo):
  
 Additional ideas:
 
- - Bayesian modelling as a way of reducing verification steps  
+ - **Bayesian modelling as a way of reducing verification steps** 
  Since we are using bayesian optimizer anyway, we have access to information about *how much are we suprized with this particular network score*, where score is this final score on test set. This can be used to additionally improve verification in big-scale tasks - the probability of being checked would be somehow proportional to the degree of our "suprize".   
  Implementation-wise, it would probably require extracting probability distributions from inside `spearmint`.
