@@ -10,7 +10,6 @@ ML task - description
      * [Description](#description)
      * [Workflow](#workflow)
   * [What's left to do](#whats-left-to-do)
-  * [Additional ideas, which are in infancy or something](#additional-ideas-which-are-in-infancy-or-something)
 
 
 ## Intro
