@@ -74,11 +74,17 @@ The [full description (private golem repo)](https://github.com/imapp-pl/golem_rd
   Other solutions can possibly involve `FHE` or something like that, but it is problably hard to do at the moment.  
   Important note: many times, independently, people thought that a good solution for this problem would be to pay for results as soon as they arrive, using something like *atomic swap*. However, it is not going to work, since the algorithm (read the analysis) depends on the fact that it is hard to cheat and not be caught *in the long run* - if we were to pay for every successful compitation before the end of computations, we would lose this advantage and the whole algorithm would be useless.
 
+---
+
 ## Implementation
 
-Implementation of neural network training is done in `PyTorch`. It was chosen after a careful consideration, [this repository (inexxt private repo)](https://github.com/inexxt/golem_rd/tree/master/ml_task) contains a rather unstructured recording of experiments done, plus a number of arugments for and agains each popular framework. **TL;DR** the main reason was the ability to handle randomness easily (so `keras` was out) and then the ease of extending and debugging (so `TF` was out).
+Implementation of neural network training is done in `PyTorch`. It was chosen after a careful consideration, [this repository (inexxt private repo)](https://github.com/inexxt/golem_rd/tree/master/ml_task) contains a rather unstructured recording of experiments done, plus a number of arugments for and agains each popular framework. **TL;DR** the main reason was the ability to handle randomness easily (so `keras` was out) and then the ease of extending and debugging (so `TF` was out). 
+Docker image for this part is available under `golemfactory/mlbase` dockerhub, Dockerfile - under `apps/mlpoc/resources/images/Dockerfile_torch`. It's fairly generic (maybe without that pytorch installation line), downloading `anaconda` distribution and swapping `/usr/bin/python` with version from `conda`.
+
 
 Implementation of hyperparameters search is done in `spearmint`. It was also chosen after a careful consideration: bayesian optimization has strong mathematical foundations, so there is a lot that can be done to extend the solution and reason about it, the license is ok, the comparision between hyperparameters-tuning software maybe doesn't really favour `spearmint`, but differences are not too big [(see paper here)](http://www.cs.ubc.ca/~hutter/papers/13-BayesOpt_EmpiricalFoundation.pdf). There is also a great advantage of simplicity - `spearmint` can be run in the special `spearmint-lite` mode, which is a single python file (plus some dependencies), which does all computations. All the communications is done by updating file, which is a great convinience, when we have to communicate between docker container and task running outside container.
+Docker image for this part is available under `golemfactory/mlspearmint` dockerhub, Dockerfile - under `apps/mlpoc/resources/images/Dockerfile_spearmint`. It's very different than `mlbase`, because development of this version of `spearmint` was ceased a long time ago. (after that they moved to more restrictive license).
+
 
 
 ### Description 
@@ -92,7 +98,6 @@ There are three distinct parts of the task:
  The code for this part is also found in the `spearmint_utils.py` file - there are all functions for creating signals, reading results, updating config file etc.  
  3. Verification part: it is done inside docker container on the requestor's machine. Main script: `requestor_verification.py`. It is run after getting results from training - the before- and after- (`.begin` and `end`) files are placed under "$RESOURCES_DIR/checkpoints" (code - as before - under `$RESOURCES_DIR/code`, data under `$RESOURCES_DIR/data`).
 
----
 ### Workflow
 
 The workflow of the task:
@@ -118,6 +123,22 @@ The workflow of the task:
  18. If every epoch was tested successfully, process exits with `code 0`. Otherwise, it throws `Exception` and exits with `code != 0`.
  19. `CoreTask` takes care of later steps.
 
+### Running
+
+To run the task, you need to checkout the `ml_task` branch from main golem repository (is not yet merged yet).
+Then, run two instances of Golem with 
+```python golemapp.py --datadir $TMPDIR_PRV -r 127.0.0.1:61002 --nogui
+python golemapp.py --datadir $TMPDIR_REQ -r 127.0.0.1:61000 --nogui -p 127.0.0.1:40102```
+
+The order of these commands is important! It is done this way because golem starts its first instance under `40102` port. We're using different protocol versions than the rest of the golem (`TASK_PROTOCOL_ID=51` and `P2P_PROTOCOL_ID=41`), so Golem requestor node wouldn't be able to discover the provider node if not the hardcoded seed. The reason to use different protocol versions is to make debugging easier - you can set up your IDE to run these commands in debug mode, and then you can debug the code with no other nodes constantly asking for tasks headers etc.
+
+`$TMPDIR_PRV` and `$TMPDIR_REQ` are just some temporary directories (can be anything, can be even not exitsing ones - golem will create them).
+
+So, when you have two golem instances started, you can submit the task by running 
+```golemcli tasks create $GOLEM_HOME/apps/mlpoc/test_data/ml.json```
+This `json` file contains some parameters of the task (you're free to modify it) and it's the only way to start before appropriate GUI part will be created.
+
+---
 
 ## What's left to do
 The most basic task is finished, but there are still areas in which it should be significantly improved:
