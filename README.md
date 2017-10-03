@@ -158,6 +158,7 @@ Issues (private golem repo):
  - [Issue #120 Asynchronous verification in MLPOCVerificator](https://github.com/imapp-pl/golem_rd/issues/120)
  - [Issue #121 Hashing network in MLPOCTask](https://github.com/imapp-pl/golem_rd/issues/121)
  - [Issue #122 Batch ordering and verification in MLPOCTask](https://github.com/imapp-pl/golem_rd/issues/122)
+ - [Issue #135 Scoring function and score verification in MLPOCTask](https://github.com/imapp-pl/golem_rd/issues/135)
  
 Additional ideas:
 
