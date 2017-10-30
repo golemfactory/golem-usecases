@@ -95,7 +95,7 @@ There are three distinct parts of the task:
  2. Parameters search part: it is done inside docker container, but this time on the requestor's machine. Main script: `docker_spearmint.py`. Although it could be in principle done on the provider's machine as well (since `spearmint` can be quite resources-heave), it is not clear what are the dangers of that (colluding problem). The main script waits for a special signal file - when it is found, it runs an appropriate shell command to run `spearmint-lite` update and then deletes the signal file.
  Signal files are not managed by any message framework, because it is only implemented for `DockerJob` and not for `LocalComputer`.
  The code for this part is also found in the `spearmint_utils.py` file - there are all functions for creating signals, reading results, updating config file etc.  
- 3. Verification part: it is done inside docker container on the requestor's machine. Main script: `requestor_verification.py`. It is run after getting results from training. Checkpoint files for verification are placed under "$RESOURCES_DIR/checkpoints" (code - as before - under `$RESOURCES_DIR/code`, data under `$RESOURCES_DIR/data`).
+ 3. Verification part: it is done inside docker container on the requestor's machine. Main script: `requestor_verification.py`. It is run after getting results from training. Checkpoint files for verification are placed under `$RESOURCES_DIR/checkpoints` (code - as before - under `$RESOURCES_DIR/code`, data under `$RESOURCES_DIR/data`).
 
 ### Full workflow
 
