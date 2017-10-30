@@ -77,7 +77,7 @@ The [full description (private golem repo)](https://github.com/imapp-pl/golem_rd
 
 [Implementation is under `ml_task` branch, in the main golemfactory/golem repo](https://github.com/golemfactory/golem/tree/ml_task)
 
-Implementation of neural network training is done in `PyTorch`. It was chosen after a careful consideration, [this repository (inexxt private repo)](https://github.com/inexxt/golem_rd/tree/master/ml_task) contains a rather unstructured recording of experiments done, plus a number of arugments for and agains each popular framework. **TL;DR** the main reason was the ability to handle randomness easily (so `keras` was out) and then the ease of extending and debugging (so `TF` was out).  
+Implementation of neural network training is done in `PyTorch`. It was chosen after a careful consideration, [this repository (golem private repo)](https://github.com/imapp-pl/golem-usecases/tree/machine_learning) contains a rather unstructured recording of experiments done, plus a number of arugments for and agains each popular framework. **TL;DR** the main reason was the ability to handle randomness easily (so `keras` was out) and then the ease of extending and debugging (so `TF` was out).  
 Docker image for this part is available under `golemfactory/mlbase` dockerhub, Dockerfile - under `apps/mlpoc/resources/images/Dockerfile_torch`. It's fairly generic (maybe without that pytorch installation line), downloading `anaconda` distribution and swapping `/usr/bin/python` with version from `conda`.
 
 
