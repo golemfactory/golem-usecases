@@ -1,0 +1,3 @@
+dependencies:
+  override:
+    - docker pull golemfactory/luxrender:1.2

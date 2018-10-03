@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<DOCUMENT Type="Advanced Installer" CreateVersion="14.5.2" version="15.2" Modules="professional" RootPath="..\..*" Language="en_GB" Id="{DD7ACB8E-6560-4C11-BE2E-BB2A4150EDC1}">
+  <COMPONENT cid="caphyon.advinst.msicomp.ProjectOptionsComponent">
+    <ROW Name="HiddenItems" Value="AppXProductDetailsComponent;AppXDependenciesComponent;AppXAppDetailsComponent;AppXVisualAssetsComponent;AppXCapabilitiesComponent;AppXAppDeclarationsComponent;AppXUriRulesComponent;MsiJavaComponent;MsiDriverPackagesComponent;UserAccountsComponent;ScheduledTasksComponent;SqlConnectionComponent;AutorunComponent;FirewallExceptionComponent;GameUxComponent;MsiDirectEditorComponent;SharePointSlnComponent;SilverlightSlnComponent;MultipleInstancesComponent;SccmComponent;ActSyncAppComponent"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiPropsComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiDirsComponent">
+    <ROW Directory="LuxRender08_test_scene_Dir" Directory_Parent="lux_Dir" DefaultDir="LUXREN~1|LuxRender08_test_scene"/>
+    <ROW Directory="Scene_Dir" Directory_Parent="LuxRender08_test_scene_Dir" DefaultDir="Scene"/>
+    <ROW Directory="lux_Dir" Directory_Parent="examples_Dir" DefaultDir="lux"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiCompsComponent">
+    <ROW Component="author.txt" ComponentId="{F1297B62-A9D8-4EA4-8EFD-F445F50FFE99}" Directory_="lux_Dir" Attributes="0" KeyPath="author.txt" Type="0"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatsComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
+    <ROW File="Cube_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="CUBE_0~1.PLY|Cube_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Cube_0000_m000.ply" SelfReg="false" NextFile="Cube_001_0000_m000.ply"/>
+    <ROW File="Cube_001_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="CUBE_0~2.PLY|Cube_001_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Cube_001_0000_m000.ply" SelfReg="false" NextFile="Cube_017_0000_m000.ply"/>
+    <ROW File="Cube_017_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="CUBE_0~3.PLY|Cube_017_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Cube_017_0000_m000.ply" SelfReg="false" NextFile="Cube_018_0000_m000.ply"/>
+    <ROW File="Cube_018_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="CUBE_0~4.PLY|Cube_018_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Cube_018_0000_m000.ply" SelfReg="false" NextFile="Cube_020_0000_m000.ply"/>
+    <ROW File="Cube_020_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="CUBE_0~5.PLY|Cube_020_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Cube_020_0000_m000.ply" SelfReg="false" NextFile="Cube_020_0001_m000.ply"/>
+    <ROW File="Cube_020_0001_m000.ply" Component_="Cube_0000_m000.ply" FileName="CUBE_0~6.PLY|Cube_020_0001_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Cube_020_0001_m000.ply" SelfReg="false" NextFile="Cube_020_0002_m000.ply"/>
+    <ROW File="Cube_020_0002_m000.ply" Component_="Cube_0000_m000.ply" FileName="CUBE_0~7.PLY|Cube_020_0002_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Cube_020_0002_m000.ply" SelfReg="false" NextFile="Cube_020_0003_m000.ply"/>
+    <ROW File="Cube_020_0003_m000.ply" Component_="Cube_0000_m000.ply" FileName="CUBE_0~8.PLY|Cube_020_0003_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Cube_020_0003_m000.ply" SelfReg="false" NextFile="Cube_021_0000_m000.ply"/>
+    <ROW File="Cube_021_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="CUBE_0~9.PLY|Cube_021_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Cube_021_0000_m000.ply" SelfReg="false" NextFile="Cube_021_0001_m000.ply"/>
+    <ROW File="Cube_021_0001_m000.ply" Component_="Cube_0000_m000.ply" FileName="CUBE_~10.PLY|Cube_021_0001_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Cube_021_0001_m000.ply" SelfReg="false" NextFile="Cube_021_0002_m000.ply"/>
+    <ROW File="Cube_021_0002_m000.ply" Component_="Cube_0000_m000.ply" FileName="CUBE_~11.PLY|Cube_021_0002_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Cube_021_0002_m000.ply" SelfReg="false" NextFile="Cube_021_0003_m000.ply"/>
+    <ROW File="Cube_021_0003_m000.ply" Component_="Cube_0000_m000.ply" FileName="CUBE_~12.PLY|Cube_021_0003_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Cube_021_0003_m000.ply" SelfReg="false" NextFile="LuxRenderGeometry.lxo"/>
+    <ROW File="LuxRenderGeometry.lxo" Component_="Cube_0000_m000.ply" FileName="LUXREN~1.LXO|LuxRender-Geometry.lxo" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\LuxRender-Geometry.lxo" SelfReg="false" NextFile="LuxRenderMaterials.lxm"/>
+    <ROW File="LuxRenderMaterials.lxm" Component_="Cube_0000_m000.ply" FileName="LUXREN~1.LXM|LuxRender-Materials.lxm" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\LuxRender-Materials.lxm" SelfReg="false" NextFile="LuxRenderVolumes.lxv"/>
+    <ROW File="LuxRenderVolumes.lxv" Component_="Cube_0000_m000.ply" FileName="LUXREN~1.LXV|LuxRender-Volumes.lxv" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\LuxRender-Volumes.lxv" SelfReg="false" NextFile="Plane_0000_m000.ply"/>
+    <ROW File="Plane_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE_~1.PLY|Plane_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_0000_m000.ply" SelfReg="false" NextFile="Plane_001_0000_m000.ply"/>
+    <ROW File="Plane_001_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE_~2.PLY|Plane_001_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_001_0000_m000.ply" SelfReg="false" NextFile="Plane_002_0000_m000.ply"/>
+    <ROW File="Plane_002_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE_~3.PLY|Plane_002_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_002_0000_m000.ply" SelfReg="false" NextFile="Plane_003_0000_m000.ply"/>
+    <ROW File="Plane_003_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE_~4.PLY|Plane_003_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_003_0000_m000.ply" SelfReg="false" NextFile="Plane_004_0000_m000.ply"/>
+    <ROW File="Plane_004_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE_~5.PLY|Plane_004_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_004_0000_m000.ply" SelfReg="false" NextFile="Plane_004_0000_m001.ply"/>
+    <ROW File="Plane_004_0000_m001.ply" Component_="Cube_0000_m000.ply" FileName="PLANE_~6.PLY|Plane_004_0000_m001.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_004_0000_m001.ply" SelfReg="false" NextFile="Plane_005_0000_m000.ply"/>
+    <ROW File="Plane_005_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE_~7.PLY|Plane_005_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_005_0000_m000.ply" SelfReg="false" NextFile="Plane_005_0000_m001.ply"/>
+    <ROW File="Plane_005_0000_m001.ply" Component_="Cube_0000_m000.ply" FileName="PLANE_~8.PLY|Plane_005_0000_m001.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_005_0000_m001.ply" SelfReg="false" NextFile="Plane_006_0000_m000.ply"/>
+    <ROW File="Plane_006_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE_~9.PLY|Plane_006_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_006_0000_m000.ply" SelfReg="false" NextFile="Plane_006_0000_m001.ply"/>
+    <ROW File="Plane_006_0000_m001.ply" Component_="Cube_0000_m000.ply" FileName="PLANE~10.PLY|Plane_006_0000_m001.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_006_0000_m001.ply" SelfReg="false" NextFile="Plane_007_0000_m000.ply"/>
+    <ROW File="Plane_007_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE~11.PLY|Plane_007_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_007_0000_m000.ply" SelfReg="false" NextFile="Plane_008_0000_m000.ply"/>
+    <ROW File="Plane_008_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE~12.PLY|Plane_008_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_008_0000_m000.ply" SelfReg="false" NextFile="Plane_009_0000_m000.ply"/>
+    <ROW File="Plane_009_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE~13.PLY|Plane_009_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_009_0000_m000.ply" SelfReg="false" NextFile="Plane_010_0000_m000.ply"/>
+    <ROW File="Plane_010_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE~14.PLY|Plane_010_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_010_0000_m000.ply" SelfReg="false" NextFile="Plane_011_0000_m000.ply"/>
+    <ROW File="Plane_011_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE~15.PLY|Plane_011_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_011_0000_m000.ply" SelfReg="false" NextFile="Plane_012_0000_m000.ply"/>
+    <ROW File="Plane_012_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE~16.PLY|Plane_012_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_012_0000_m000.ply" SelfReg="false" NextFile="Plane_013_0000_m000.ply"/>
+    <ROW File="Plane_013_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE~17.PLY|Plane_013_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_013_0000_m000.ply" SelfReg="false" NextFile="Plane_014_0000_m000.ply"/>
+    <ROW File="Plane_014_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE~18.PLY|Plane_014_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_014_0000_m000.ply" SelfReg="false" NextFile="Plane_015_0000_m000.ply"/>
+    <ROW File="Plane_015_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE~19.PLY|Plane_015_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_015_0000_m000.ply" SelfReg="false" NextFile="Plane_015_0001_m000.ply"/>
+    <ROW File="Plane_015_0001_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE~20.PLY|Plane_015_0001_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_015_0001_m000.ply" SelfReg="false" NextFile="Plane_019_0000_m000.ply"/>
+    <ROW File="Plane_019_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE~21.PLY|Plane_019_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_019_0000_m000.ply" SelfReg="false" NextFile="Plane_019_0001_m000.ply"/>
+    <ROW File="Plane_019_0001_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE~22.PLY|Plane_019_0001_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_019_0001_m000.ply" SelfReg="false" NextFile="Plane_020_0000_m000.ply"/>
+    <ROW File="Plane_020_0000_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE~23.PLY|Plane_020_0000_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_020_0000_m000.ply" SelfReg="false" NextFile="Plane_020_0001_m000.ply"/>
+    <ROW File="Plane_020_0001_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE~24.PLY|Plane_020_0001_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_020_0001_m000.ply" SelfReg="false" NextFile="Plane_020_0002_m000.ply"/>
+    <ROW File="Plane_020_0002_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE~25.PLY|Plane_020_0002_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_020_0002_m000.ply" SelfReg="false" NextFile="Plane_020_0003_m000.ply"/>
+    <ROW File="Plane_020_0003_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE~26.PLY|Plane_020_0003_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_020_0003_m000.ply" SelfReg="false" NextFile="Plane_020_0004_m000.ply"/>
+    <ROW File="Plane_020_0004_m000.ply" Component_="Cube_0000_m000.ply" FileName="PLANE~27.PLY|Plane_020_0004_m000.ply" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\LuxRender08_test_scene\Scene\00001\Plane_020_0004_m000.ply" SelfReg="false" NextFile="schoolcorridor.lxs"/>
+    <ROW File="author.txt" Component_="author.txt" FileName="author.txt" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\author.txt" SelfReg="false" NextFile="Cube_0000_m000.ply"/>
+    <ROW File="schoolcorridor.lxs" Component_="author.txt" FileName="SCHOOL~1.LXS|schoolcorridor.lxs" Attributes="0" SourcePath="Installer\Installer_Win\install_tmp\examples\lux\schoolcorridor.lxs" SelfReg="false" NextFile="ffmpeg.dll"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.AiRemoveFileComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.BootstrOptComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.BuildComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.DictionaryComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.DigCertStoreComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.FragmentComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.GenericXmlAttributeComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.GenericXmlElementComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.GenericXmlFileComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiActionTextComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiAppSearchComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiBinaryComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiConditionComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiControlComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiControlEventComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiCreateFolderComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiCustActComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiEnvComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiIconsComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiInstExSeqComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiInstallUISequenceComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiLaunchConditionsComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiRegLocatorComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiRegsComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiRemoveFileComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiShortsComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiThemeComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiUpgradeComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.PreReqComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.PreReqSearchComponent">
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.SynchronizedFolderComponent">
+  </COMPONENT>
+</DOCUMENT>
