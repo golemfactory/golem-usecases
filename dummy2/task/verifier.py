@@ -16,13 +16,12 @@ class Dummy2TaskVerifier(CoreVerifier):
             self.subtask_info = None
 
     def _verify_result(self, results: Dict[str, Any]):
-
         subtask_info = results["subtask_info"]
         result = results["results"][0]
 
         # Workaround for inability to provide parent_task reference for
         # Dummy2Task object
-        if subtask_info['verification']:
+        if subtask_info.get('verification', False):
             return True
 
         # Accessing owner task is required because it keeps randomly generated
